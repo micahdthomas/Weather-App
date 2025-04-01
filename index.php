@@ -1,5 +1,7 @@
 <?php
 //this is basically the entry point to the app using MVC architecture. 
+//Our initial "landing page". Usually, you might have a system that does less BUT I figured it would be easiest 
+//to work with this way.
 session_start();
 
 //Loads user controller logic

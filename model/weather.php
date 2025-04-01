@@ -21,21 +21,21 @@
 					$query = urlencode("$city,$state,$country");
 */
 require_once 'database.php';
-
+//
 function getWeather($city) {
     $apiKey = '1cc91f40e8a5f8c15ccf9fb11cbcc931'; //my individually generated key from openweather.
     $apiUrl = 'http://api.openweathermap.org/data/2.5/weather'; //where we connect to the site
     
-    // Construct URL using the provided city and metric units for Celsius
+    // Construct URL using the provided city and currently grabs celsius - we should def change to f.
     $url = $apiUrl . '?q=' . urlencode($city) . '&appid=' . $apiKey . '&units=metric';
-    
+    //failsafe in case call fails
     $response = @file_get_contents($url);
     if (!$response) {
         return "API call failed";
     }
     
     $data = json_decode($response, true);
-    // Check for a successful response (OpenWeatherMap returns a 'cod' key)
+    // Check for a successful response (OpenWeatherMap returns a 'cod' key, whatever that means)
     if (!is_array($data) || (($data['cod'] ?? 0) != 200)) {
         $errorMessage = $data['message'] ?? 'Unknown error';
         return "Invalid response: $errorMessage";
@@ -50,14 +50,14 @@ function getWeather($city) {
             : 'https://via.placeholder.com/50?text=?'
     ];
 }
-
+//retrieve saved weather function
 function getSavedWeather($email) {
     global $pdo;
     $stmt = $pdo->prepare("SELECT * FROM saved_weather WHERE email = ? ORDER BY date_saved DESC");
     $stmt->execute([$email]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-// FOR SOME DUMB REASON this crashes out (I think the redirect is just broken... haven't had enough time to debug). Not sure if it's an issue here OR with the controller.
+//Save weather function
 function saveWeather($email, $city, $temperature, $description, $icon_url) {
     global $pdo;
     $stmt = $pdo->prepare("INSERT INTO saved_weather (email, city, temperature, description, icon_url, date_saved) VALUES (?, ?, ?, ?, ?, NOW())");

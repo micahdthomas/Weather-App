@@ -3,7 +3,7 @@
 // This is the controller for the user (it is the mid-layer between the UI and our data)
 
 
-//I setup a bunch of error stuff bellow. I couldn't figure out WHY my data wasn't being pulled properly.
+//I setup a bunch of error stuff bellow. I couldn't figure out WHY my data wasn't being pulled properly -----
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -12,7 +12,7 @@ error_reporting(E_ALL);
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-//^^^^^^^^^^ All this error stuff can prolly go ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//^^^^^^^^^^ All this error stuff  abovecan prolly go ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 require_once __DIR__ . '/../model/database.php';
 require_once __DIR__ . '/../model/user.php';

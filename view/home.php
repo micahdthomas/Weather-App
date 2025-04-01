@@ -16,7 +16,7 @@ $rawWeather = getWeather($user['preferred_city']);
 if (is_array($rawWeather)) {
     $weather = $rawWeather;
 } else {
-    $errorMsg = $rawWeather; // e.g. "API call failed" or "Invalid response: ..."
+    $errorMsg = $rawWeather; //failure notices
     $weather = [
         'city' => $user['preferred_city'],
         'temperature' => '--',
@@ -50,7 +50,7 @@ $savedWeather = getSavedWeather($user['email']);
             <button type="submit">Save this weather</button>
         </form>
     </div>
-
+	
     <h3>Saved Weather</h3>
     <?php foreach ($savedWeather as $entry): ?>
         <div class="weather-card">

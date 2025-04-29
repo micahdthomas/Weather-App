@@ -31,35 +31,79 @@ $savedWeather = getSavedWeather($user['email']);
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <title>Home - Weather Dashboard</title>
     <link rel="stylesheet" href="../styles.css">
-    <title>User Home</title>
 </head>
 <body>
-<div class="container">
-    <h2>Welcome, <?= htmlspecialchars($user['first_name']) ?>!</h2>
-    <div class="weather-card">
-        <h3><?= htmlspecialchars($weather['city']) ?></h3>
-        <p><?= htmlspecialchars($weather['temperature']) ?>°C - <?= htmlspecialchars($weather['description']) ?></p>
-        <img src="<?= htmlspecialchars($weather['icon_url']) ?>" alt="Weather Icon"><br><br>
-        <form method="post" action="/weather_app/controller/weather_controller.php">
-            <input type="hidden" name="action" value="save_weather">
-            <input type="hidden" name="city" value="<?= htmlspecialchars($weather['city']) ?>">
-            <input type="hidden" name="temperature" value="<?= htmlspecialchars($weather['temperature']) ?>">
-            <input type="hidden" name="description" value="<?= htmlspecialchars($weather['description']) ?>">
-            <input type="hidden" name="icon_url" value="<?= htmlspecialchars($weather['icon_url']) ?>">
-            <button type="submit">Save this weather</button>
-        </form>
-    </div>
-	
-    <h3>Saved Weather</h3>
-    <?php foreach ($savedWeather as $entry): ?>
-        <div class="weather-card">
-            <p><?= htmlspecialchars($entry['city']) ?> - <?= htmlspecialchars($entry['temperature']) ?>°C</p>
-            <p><?= htmlspecialchars($entry['description']) ?></p>
-            <p><?= htmlspecialchars($entry['date_saved']) ?></p>
-            <img src="<?= htmlspecialchars($entry['icon_url']) ?>" alt="icon">
-        </div>
-    <?php endforeach; ?>
+
+<!-- Top Search Bar -->
+<div class="top-bar">
+    <form class="search-form" action="../controller/weather_controller.php" method="get">
+        <input type="text" name="city" placeholder="Enter city name" required>
+        <button type="submit">Search</button>
+    </form>
 </div>
+
+<!-- Three Column Flex Layout -->
+<div class="three-column-layout">
+    
+    <!-- Left Column (Empty) -->
+    <div class="left-column">
+        <!-- Intentionally left empty -->
+    </div>
+
+    <!-- Center Column (Time, Date, Current Weather) -->
+    <div class="center-column">
+        <div class="datetime">
+            <?php echo date("g:i A"); ?>
+        </div>
+        <div class="date-display">
+            <?php echo date("l, F j, Y"); ?>
+        </div>
+
+        <?php if ($rawWeather): ?>
+            <div class="weather-card current-weather">
+                <h2><?php echo htmlspecialchars($rawWeather['city']); ?></h2>
+                <p><?php echo htmlspecialchars($rawWeather['description']); ?></p>
+                <p>Temp: <?php echo htmlspecialchars($rawWeather['temperature']); ?>°C</p>
+                <img src="http://openweathermap.org/img/wn/<?php echo htmlspecialchars($rawWeather['icon']); ?>@2x.png" alt="Weather Icon">
+            </div>
+        <?php else: ?>
+            <p>No current weather data available.</p>
+        <?php endif; ?>
+    </div>
+
+    <!-- Right Column (Saved Weather List) -->
+    <div class="sidebar">
+        <h3>Recent Saved Weather</h3>
+
+        <?php if ($savedWeather): ?>
+            <?php 
+            $count = 0;
+            foreach ($savedWeather as $entry): 
+                if ($count >= 3) break;
+            ?>
+                <div class="weather-card">
+                    <h4><?php echo htmlspecialchars($entry['city']); ?></h4>
+                    <p><?php echo htmlspecialchars($entry['description']); ?></p>
+                    <p>Temperature: <?php echo htmlspecialchars($entry['temperature']); ?>°C</p>
+                    <p>Date Saved: <?php echo htmlspecialchars($entry['date_saved']); ?></p>
+                </div>
+            <?php 
+                $count++;
+            endforeach;
+            ?>
+        <?php else: ?>
+            <p>No saved weather entries.</p>
+        <?php endif; ?>
+
+        <div class="view-history-link">
+            <a href="history.php">View More</a>
+        </div>
+    </div>
+
+</div>
+
 </body>
 </html>

@@ -1,6 +1,5 @@
 <?php
 // model/weather.php - This basically manipulates our weather data and pulls from our API.
-//ALL SQL is stand-in for the purpose of testing funcitonality. 
 //All our weather-ralted SQL calls can be found here. 
 
 /*             The older model gave weather details like the code bellow. Might need to grab all this the same way.
@@ -27,7 +26,7 @@ function getWeather($city) {
     $apiUrl = 'http://api.openweathermap.org/data/2.5/weather'; //where we connect to the site
     
     // Construct URL using the provided city and currently grabs celsius - we should def change to f.
-    $url = $apiUrl . '?q=' . urlencode($city) . '&appid=' . $apiKey . '&units=metric';
+    $url = $apiUrl . '?q=' . urlencode($city) . '&appid=' . $apiKey . '&units=imperial';
     //failsafe in case call fails
     $response = @file_get_contents($url);
     if (!$response) {

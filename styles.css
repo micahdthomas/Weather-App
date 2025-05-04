@@ -119,3 +119,14 @@ body {
     font-weight: bold;
 }
 .view
+
+.top-bar a {
+    color: #007BFF;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.top-bar a:hover {
+    background-color: #e0f0ff;
+    text-decoration: underline;
+}

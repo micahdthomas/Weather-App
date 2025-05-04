@@ -39,7 +39,43 @@ switch ($action) {
             echo "<p class='error'>Registration failed. <a href='../view/register.php'>Try again</a></p>";
         }
         break;
+	
+	case 'update':
+        if (!isset($_SESSION['user'])) {
+            header('Location: ../index.php');
+            exit();
+        }
 
+        $email = $_SESSION['user']['email']; // prevent email changes
+        $firstName = $_POST['first_name'];
+        $lastName = $_POST['last_name'];
+        $preferredCity = $_POST['preferred_city'];
+        $newPassword = $_POST['password'];
+
+        // Handle conditional password change
+        if (!empty($newPassword)) {
+            $passwordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+        } else {
+            // Get the current password hash from DB
+            $existingUser = getUserByEmail($email);
+            $passwordHash = $existingUser['password'];
+        }
+
+        $updated = updateUser($email, $firstName, $lastName, $passwordHash, $preferredCity);
+
+        if ($updated) {
+            // Update session with new values
+            $_SESSION['user']['first_name'] = $firstName;
+            $_SESSION['user']['last_name'] = $lastName;
+            $_SESSION['user']['preferred_city'] = $preferredCity;
+            header('Location: ../view/home.php');
+            exit();
+        } else {
+            echo "<p class='error'>Update failed. <a href='../view/edit_user.php'>Try again</a></p>";
+        }
+        break;
+	
+	
     case 'home':
         if (!isset($_SESSION['user'])) {
             header('Location: ../index.php');
@@ -56,24 +92,4 @@ switch ($action) {
         break;
 }
 
-// Profile editing stays unchanged
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'edit_profile') {
-    $updated = updateUser(
-        $_POST['first_name'],
-        $_POST['last_name'],
-        $_SESSION['user']['email'],
-        $_POST['preferred_city'],
-        $_POST['password']
-    );
-
-    if ($updated) {
-        $_SESSION['user']['first_name'] = $_POST['first_name'];
-        $_SESSION['user']['last_name'] = $_POST['last_name'];
-        $_SESSION['user']['preferred_city'] = $_POST['preferred_city'];
-        header('Location: ../view/home.php');
-        exit();
-    } else {
-        echo "Error updating profile.";
-    }
-}
 ?>

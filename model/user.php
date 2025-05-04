@@ -1,6 +1,6 @@
 <?php
 // model/user.php - This basically manipulates data and connects to our user database. 
-//ALL SQL is stand-in for the purpose of testing funcitonality. 
+//SQL has been properly updated and should be fully functional now. 
 //All our user-ralted SQL calls can be found here. 
 
 require_once __DIR__ . '/database.php';
@@ -14,14 +14,13 @@ function registerUser($first_name, $last_name, $email, $password, $preferred_cit
     
     return $stmt->execute([$first_name, $last_name, $email, $hashed, $preferred_city]);
 }
-
-function updateUser($first_name, $last_name, $email, $preferred_city, $new_password) {
+//Update user function -- MKII - hoping this works!
+function updateUser($email, $first_name, $last_name, $password_hash, $preferred_city) {
     global $pdo;
 
-    if (!empty($new_password)) {
-        $hashed = password_hash($new_password, PASSWORD_DEFAULT);
-        $stmt = $pdo->prepare("UPDATE users SET first_name = ?, last_name = ?, preferred_city = ?, password = ? WHERE email = ?");
-        return $stmt->execute([$first_name, $last_name, $preferred_city, $hashed, $email]);
+    if (!empty($password_hash)) {
+        $stmt = $pdo->prepare("UPDATE users SET first_name = ?, last_name = ?, password = ?, preferred_city = ? WHERE email = ?");
+        return $stmt->execute([$first_name, $last_name, $password_hash, $preferred_city, $email]);
     } else {
         $stmt = $pdo->prepare("UPDATE users SET first_name = ?, last_name = ?, preferred_city = ? WHERE email = ?");
         return $stmt->execute([$first_name, $last_name, $preferred_city, $email]);
@@ -38,4 +37,13 @@ function loginUser($email, $password) {
     }
     return false;
 }
+
+//Get user by email function -- used in editing
+function getUserByEmail($email) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 ?>

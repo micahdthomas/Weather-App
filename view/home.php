@@ -56,6 +56,9 @@ if (isset($_GET['city']) && !empty($_GET['city'])) {
         <input type="text" name="city" placeholder="Enter city name" required>
         <button type="submit">Search</button>
     </form>
+    <div style="display: inline-block; margin-left: 35px;">
+        <a href="edit.php" style="text-decoration: none; font-weight: bold;">Edit Profile</a>
+    </div>
 </div>
 
 <!-- Three Column Flex Layout -->

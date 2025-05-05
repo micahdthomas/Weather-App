@@ -29,8 +29,8 @@
             <label for="password">Password:</label><br>
             <input type="password" id="password" name="password" required><br><br>
 
-            <label for="preferred_city">Preferred City (city, state abbreviation, country. Only works in USA):</label><br>
-            <input type="text" id="preferred_city" name="preferred_city" required><br><br>
+            <label for="preferred_city">Preferred City (City, state abbreviation, USA):</label><br>
+            <input type="text" id="preferred_city" name="preferred_city" placeholder="e.g. Denver, CO, USA" required>
 			<input type="hidden" name="action" value="register">
 
 			<input type="submit" value="Register">

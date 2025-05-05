@@ -130,3 +130,18 @@ body {
     background-color: #e0f0ff;
     text-decoration: underline;
 }
+
+button.delete-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+button.delete-button:hover {
+    background-color: #b02a37;
+}

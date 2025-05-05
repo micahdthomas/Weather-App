@@ -62,4 +62,10 @@ function saveWeather($email, $city, $temperature, $description, $icon_url) {
     $stmt = $pdo->prepare("INSERT INTO saved_weather (email, city, temperature, description, icon_url, date_saved) VALUES (?, ?, ?, ?, ?, NOW())");
     return $stmt->execute([$email, $city, $temperature, $description, $icon_url]);//Likely cause of the issue. Double check.
 }
+//Delete weather function
+function deleteSavedWeather($id, $email) {
+    global $pdo;
+    $stmt = $pdo->prepare("DELETE FROM saved_weather WHERE id = ? AND email = ?");
+    return $stmt->execute([$id, $email]);
+}
 ?>

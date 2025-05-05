@@ -32,6 +32,10 @@ switch ($action) {
             'password' => $_POST['password'],
             'preferred_city' => $_POST['preferred_city']
         ];
+		if (!preg_match('/^[a-zA-Z\s]+,\s*[A-Z]{2},\s*USA$/', $data['preferred_city'])) {
+        header("Location: ../view/register.php?error=Please use the format: City, ST, USA (e.g., Denver, CO, USA)");
+        exit();
+    }
         if (registerUser($data['first_name'], $data['last_name'], $data['email'], $data['password'], $data['preferred_city'])) {
             header('Location: ../index.php');
             exit();
